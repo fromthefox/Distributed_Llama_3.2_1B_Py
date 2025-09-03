@@ -9,14 +9,14 @@ class TCPClient:
     """
     Client-side implementation
     """
-    def __init__(self, host: str = '192.168.1.104', port: int = 44444):
+    def __init__(self, host_self: str = '127.0.0.1', port_self:int = 34567, host_tar: str = '127.0.0.1', port_tar: int = 44444):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
         # Bind to a specific address and port (optional), make sure to use a different port than the server
-        self.sock.bind(("127.0.0.1", 34567))
+        self.sock.bind((host_self, port_self))
 
         # Connect to the server
-        self.sock.connect((host, port))
+        self.sock.connect((host_tar, port_tar))
 
         # Set the socket to non-blocking mode (optional)
         self.running = True
@@ -31,8 +31,14 @@ class TCPClient:
                 if not data:
                     break
                 
+                
+
                 data_unpack = unpack_tensor(data)
-                data_tensor = data_unpack["tensor"]
+
+                data_tensor = data_unpack[0]
+
+                
+
                 if len(data_tensor.shape) == 2:
                     """
                     here we can also pack some str with the data to differ the tensor type from input_embedding and matrix

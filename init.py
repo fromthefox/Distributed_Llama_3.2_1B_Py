@@ -12,7 +12,7 @@ import configparser
 import ast
 
 def load_model(model_path, tokenizer_path, config_path):
-    model = torch.load(model_path)
+    model = torch.load(model_path, map_location=torch.device('cpu'))
     special_tokens = [
             "<|begin_of_text|>",
             "<|end_of_text|>",

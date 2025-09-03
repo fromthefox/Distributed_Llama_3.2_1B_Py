@@ -69,16 +69,23 @@ def get_freqs_cis(config, tokens_length):
     return freqs_cis
 
 def QKV_distribution(addrs_list:list, ports_list:list, tar_index:int, server: socket_server.TCPServer, q_chunks:tuple, k_chunks:tuple, v_chunks:tuple, layer_embedding_norm:torch.Tensor) -> list:
+    
+    computation_timeinfo = None
+    translation_timeinfo = None
+
+
     QKV_res_list = []
+
     target_ip = addrs_list[tar_index]
     target_port = int(ports_list[tar_index])
     tar_addr = (target_ip, target_port)
     computation_timeinfo_list = []
     QKV_start = time.perf_counter()
-    translation_timinfo = None
     # send the layer_embedding_norm_bytes to the server
     layer_embedding_norm_bytes = socket_comm_module.pack_tensor(tensor=layer_embedding_norm)
     response_embedding = server.send_data(tar_addr, layer_embedding_norm_bytes)
+
+
     if response_embedding == b"Received": # means the client received the embedding res
         q_chunks_bytes = socket_comm_module.pack_tensor(tensor=q_chunks[tar_index])
         response_q_per_token_all_heads_piece_bytes = server.send_data(tar_addr, q_chunks_bytes)
@@ -153,9 +160,12 @@ def inference_server(model, tokenizer, config, server, input_text, allocation_li
 
     # how to get addrs_list?
     addrs_list = user_config["network_config"]["addrs_list"]
+
+    """
+    addrs_list = ["127.0.0.1", "127.0.0.1"]
+    ports_list = ["34567", "45678"]
+    """
     ports_list = user_config["network_config"]["ports_list"]
-    print(addrs_list)
-    print(ports_list)
 
     final_embedding = token_embeddings_unnormalized
     computation_timeinfo_for_all_nodes = []

@@ -50,9 +50,12 @@ def generation_loop(initial_input, max_tokens_length, model, tokenizer, config, 
             next_text in ["</s>", "<|endoftext|>"]   # Common terminators (adjusted to the actual tokenizer)
         ]
         
+
+        print("full_output:", full_output)
+
         if any(stop_conditions):
             break
-
+        
         # new_base_weights = cal_new_base_weights(computation_time_list=computation_time_list, translation_time_list=translation_time_list)
         # new_dynamic_ratio = cal_new_dynamic_ratio(computation_time_list=computation_time_list, translation_time_list=translation_time_list)
         # dynamic_weights_array = dynamic_weights_dis(dynamic_weights=dynamic_part, base_weights=new_base_weights)

@@ -8,7 +8,7 @@ import socket_server
 import threading
 import model_inference_framework
 import numpy as np
-
+import time
 
 def infenerce_main_for_server(allocation_list:list, model_path:str, tokenizer_path:str, config_path:str, user_config_path:str, dynamic_part:np.ndarray, nodes_info_dict:dict) -> str:
     """
@@ -21,11 +21,14 @@ def infenerce_main_for_server(allocation_list:list, model_path:str, tokenizer_pa
     # 1.
     
     # 1.1. init the server
-    server = socket_server.TCPServer(port=34567)
+    server = socket_server.TCPServer(port=44444)
 
     # 1.2 start listening
     server_thread = threading.Thread(target=server.start)
     server_thread.start()
+
+    time.sleep(10)
+    
 
     # 2. load model, tokenizer, config
     model, tokenizer, config = init.load_model(model_path, tokenizer_path, config_path)
