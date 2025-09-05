@@ -8,7 +8,7 @@ def inference_main_for_worker():
     """
     this function is used to finish the inference task for worker node
     """
-    host_self, port_self, host_tar, port_tar = "192.168.7.2", 34567, "192.168.7.1", 11111
+    host_self, port_self, host_tar, port_tar = "192.168.7.2", 34567, "192.168.7.1", 44444
     client = TCPClient(host_self, port_self, host_tar, port_tar)
     client.start_handling()
 
